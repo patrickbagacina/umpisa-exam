@@ -72,7 +72,7 @@ Auth: everything except `login` and `health` needs `Authorization: Bearer <JWT>`
   Check: M1 and M2 pass by hand.
 - [x] **T8 Web component tests** (`web/src`): Vitest + RTL with Apollo MockedProvider for LoginPage, ProtectedRoute, ItemForm validation, ItemDetail actions per status.
   Check: `npm test -w web` passes.
-- [ ] **T9 README + fresh-clone run** (`/`, `api/Dockerfile`, `web/Dockerfile`): compose services db+api+web, README (setup, demo login, scripts, architecture, tests).
+- [x] **T9 README + fresh-clone run** (`/`, `api/Dockerfile`, `web/Dockerfile`): compose services db+api+web, README (setup, demo login, scripts, architecture, tests).
   Check: M3 passes.
 
 ## Checks

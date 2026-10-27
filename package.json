@@ -1,0 +1,29 @@
+{
+  "name": "lost-and-found",
+  "private": true,
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev:api": "npm run start:dev -w api",
+    "dev:web": "npm run dev -w web",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces && prettier --check .",
+    "test": "npm test --workspaces",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  },
+  "overrides": {
+    "@apollo/server": "^5.5.1",
+    "@graphql-tools/merge": "^9.2.8",
+    "@graphql-tools/schema": "^10.1.5",
+    "@graphql-tools/utils": "^12.1.0",
+    "multer": "^2.5.0"
+  }
+}

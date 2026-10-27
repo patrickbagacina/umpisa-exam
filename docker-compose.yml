@@ -12,10 +12,35 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     healthcheck:
-      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-ulostfound', '-plostfound']
+      # TCP (not the socket) so the temporary server MySQL runs during first-time init doesn't count as ready.
+      test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-ulostfound', '-plostfound']
       interval: 5s
       timeout: 5s
-      retries: 20
+      retries: 30
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '5173:80'
+    depends_on:
+      - api
 
 volumes:
   db-data:
