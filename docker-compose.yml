@@ -1,0 +1,21 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: lostfound
+      MYSQL_USER: lostfound
+      MYSQL_PASSWORD: lostfound
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3307:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-ulostfound', '-plostfound']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db-data:
