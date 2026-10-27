@@ -10,6 +10,6 @@ Read PLAN.md before any task. Build against its Contract; update the Contract fi
 - Tick the task's box in PLAN.md when its check passes.
 - No real secrets: `.env.example` and config defaults only, dev-only JWT secret.
 
-**Commands:** Pending until T1.
+**Commands** (from root): `docker compose up -d db` (MySQL on 3307) · `npm install` · `npm run dev:api` / `npm run dev:web` · `npm run build` · `npm run lint` (ESLint + Prettier check) · `npm test` · `npm run format`. Per app: add `-w api` / `-w web`. Migrations: `npm run migration:generate -w api -- src/database/migrations/<Name>`.
 
 **Skills (`.claude/skills/`):** `plan-project` — start a project from a brief (already run) · `build-task` — build a T# from PLAN.md · `fix` — find and fix the cause of a failing check, error or test.

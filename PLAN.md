@@ -39,6 +39,7 @@ input CreateItemInput { name: String!  description: String  category: ItemCatego
 input ClaimItemInput { ownerName: String!  ownerContact: String! }
 
 type Query {
+  health: String!                          # public, returns "ok"
   me: User!
   items(status: ItemStatus, search: String, limit: Int): [Item!]!
   item(id: ID!): Item!                      # NOT_FOUND if missing
@@ -52,24 +53,24 @@ type Mutation {
   returnItem(id: ID!): Item!
 }
 ```
-Auth: everything except `login` needs `Authorization: Bearer <JWT>` (HS256, 8h, payload `{ sub, email }`). Endpoint `http://localhost:3000/graphql`.
+Auth: everything except `login` and `health` needs `Authorization: Bearer <JWT>` (HS256, 8h, payload `{ sub, email }`). Endpoint `http://localhost:3000/graphql`.
 
 ## Tasks
-- [ ] **T1 Scaffold** (`/`, `api/`, `web/`): root npm workspaces, `docker-compose.yml` (mysql:8.4), Nest GraphQL app, Vite React TS app, ESLint/Prettier, Jest/Vitest, `.env.example`, config with safe defaults.
+- [x] **T1 Scaffold** (`/`, `api/`, `web/`): root npm workspaces, `docker-compose.yml` (mysql:8.4), Nest GraphQL app, Vite React TS app, ESLint/Prettier, Jest/Vitest, `.env.example`, config with safe defaults.
   Check: `docker compose up -d db && npm install && npm run build && npm run lint && npm test` all pass.
-- [ ] **T2 API auth + seed** (`api/src/auth`, `api/src/users`, `api/src/database`): User entity + migration, bcrypt, login, `me`, global GQL JWT guard with `@Public()`, seeder. Unit tests: AuthService, seeder idempotency.
+- [x] **T2 API auth + seed** (`api/src/auth`, `api/src/users`, `api/src/database`): User entity + migration, bcrypt, login, `me`, global GQL JWT guard with `@Public()`, seeder. Unit tests: AuthService, seeder idempotency.
   Check: `login` with demo creds returns a token; `me` without it → UNAUTHENTICATED.
-- [ ] **T3 API items** (`api/src/items`): Item entity + migration, createItem, items (filter/search/limit), item, itemStats, DTO validation, seed items. Unit tests: ItemsService, DTO rules.
+- [x] **T3 API items** (`api/src/items`): Item entity + migration, createItem, items (filter/search/limit), item, itemStats, DTO validation, seed items. Unit tests: ItemsService, DTO rules.
   Check: `npm test -w api` passes; createItem then `items(search:)` returns it.
-- [ ] **T4 API status transitions** (`api/src/items`): pure `transition(status, action)`, claimItem/releaseClaim/returnItem. Unit tests: every allowed and rejected transition.
+- [x] **T4 API status transitions** (`api/src/items`): pure `transition(status, action)`, claimItem/releaseClaim/returnItem. Unit tests: every allowed and rejected transition.
   Check: returnItem on UNCLAIMED → BAD_USER_INPUT; claim → return succeeds.
-- [ ] **T5 Web shell + login** (`web/src/app`, `web/src/auth`, `web/src/components`): Apollo client + auth link, AuthProvider (localStorage token), ProtectedRoute, layout/nav with logout, S0 login form.
+- [x] **T5 Web shell + login** (`web/src/app`, `web/src/auth`, `web/src/components`): Apollo client + auth link, AuthProvider (localStorage token), ProtectedRoute, layout/nav with logout, S0 login form.
   Check: `npm run build -w web`; demo login lands on `/`; visiting `/items` logged out → `/login`.
-- [ ] **T6 Web dashboard + list** (`web/src/pages`): S1 stats cards + latest items, S2 list with debounced search and status filter, shared StatusBadge.
+- [x] **T6 Web dashboard + list** (`web/src/pages`): S1 stats cards + latest items, S2 list with debounced search and status filter, shared StatusBadge.
   Check: seeded counts 4/2/2 show on S1; filtering S2 to RETURNED shows 2 rows.
-- [ ] **T7 Web log form + detail** (`web/src/pages`): S3 form with client validation and error display, S4 detail with claim form, release, return buttons shown per status.
+- [x] **T7 Web log form + detail** (`web/src/pages`): S3 form with client validation and error display, S4 detail with claim form, release, return buttons shown per status.
   Check: M1 and M2 pass by hand.
-- [ ] **T8 Web component tests** (`web/src`): Vitest + RTL with Apollo MockedProvider for LoginPage, ProtectedRoute, ItemForm validation, ItemDetail actions per status.
+- [x] **T8 Web component tests** (`web/src`): Vitest + RTL with Apollo MockedProvider for LoginPage, ProtectedRoute, ItemForm validation, ItemDetail actions per status.
   Check: `npm test -w web` passes.
 - [ ] **T9 README + fresh-clone run** (`/`, `api/Dockerfile`, `web/Dockerfile`): compose services db+api+web, README (setup, demo login, scripts, architecture, tests).
   Check: M3 passes.
